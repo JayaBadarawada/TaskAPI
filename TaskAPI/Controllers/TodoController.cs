@@ -27,6 +27,32 @@ namespace TaskAPI.Controllers
             _todoRepository.CreateTodo(userId,todo);
             return Ok();
         }
+        [HttpDelete("{id}")]
+        public ActionResult DeleteTodo(int id)
+        {
+            var todo = _todoRepository.DeleteTodo(id);
+            if (!todo)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok("Todo Successfully Deleted!");
+            }
+        }
+        [HttpPut("{id}")]
+        public ActionResult UpdateTodo(int id,Todo t) {
+            var todo = _todoRepository.UpdateTodo(id,t);
+            if (!todo)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok("Todo Successfully Updated!");
+            }
+
+        }
 
     }
 }

@@ -24,7 +24,7 @@ namespace TaskAPI.Controllers
 
             return Ok(_userRepository.GetUsers());
         }
-        [HttpGet("{id}")]
+        [HttpGet("{id}"), Authorize]
         public IActionResult GetUserById(int id)
         {
 
@@ -39,7 +39,7 @@ namespace TaskAPI.Controllers
             }
 
         }
-        [HttpGet("{userId}/todos")]
+        [HttpGet("{userId}/todos"), Authorize]
         public IActionResult GetUserTodos(int userId)
         {
             var todos = _userRepository.GetUserTodos(userId);
@@ -52,7 +52,7 @@ namespace TaskAPI.Controllers
                 return Ok(todos);
             }
         }
-        [HttpGet("{userId}/todos/{todoId}")]
+        [HttpGet("{userId}/todos/{todoId}"), Authorize]
         public IActionResult GetUserTodoDetails(int userId,int todoId)
         {
             var todo = _userRepository.GetUserTodoDetails(userId,todoId);
@@ -65,6 +65,7 @@ namespace TaskAPI.Controllers
                 return Ok(todo);
             }
         }
+
     }
 }
 

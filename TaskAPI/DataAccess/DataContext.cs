@@ -19,7 +19,7 @@ namespace TaskAPI.DataAccess
 
             modelBuilder.Entity<User>().HasData(new { Id = 1, Username = "Atlal",Password="1234" });
 
-            modelBuilder.Entity<Todo>().HasData(new { Id = 1, Title = "sleep!!" });
+            modelBuilder.Entity<Todo>().HasData(new { Id = 1, Title = "sleep!!",IsCompleted=false });
 
 
 

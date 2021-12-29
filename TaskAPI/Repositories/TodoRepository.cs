@@ -21,6 +21,36 @@ namespace TaskAPI.Repositories
 
             return todoTask;
         }
+        public bool DeleteTodo(int id)
+        {
+            Todo todo = _context.Todos.FirstOrDefault(t => t.Id == id);
+            if (todo != null)
+            {
+                _context.Todos.Remove(todo);
+                _context.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public bool UpdateTodo(int id, Todo t)
+        {
+            Todo todo = _context.Todos.FirstOrDefault(t => t.Id == id);
+            if (todo != null)
+            {
+                todo.Title = t.Title;
+                todo.IsCompleted = t.IsCompleted;
+                _context.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
     }
 }
 
