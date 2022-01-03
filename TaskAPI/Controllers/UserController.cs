@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using TaskAPI.Repositories;
 
@@ -18,13 +19,14 @@ namespace TaskAPI.Controllers
             _userRepository = userRepository;
 
         }
-        [HttpGet, Authorize]
+     
+        [HttpGet]
         public IActionResult GetUsers()
         {
 
             return Ok(_userRepository.GetUsers());
         }
-        [HttpGet("{id}"), Authorize]
+        [HttpGet("{id}")]
         public IActionResult GetUserById(int id)
         {
 
@@ -39,6 +41,12 @@ namespace TaskAPI.Controllers
             }
 
         }
+
+      
+
+
+
+
         [HttpGet("{userId}/todos"), Authorize]
         public IActionResult GetUserTodos(int userId)
         {

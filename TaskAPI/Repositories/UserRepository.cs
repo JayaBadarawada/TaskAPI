@@ -10,13 +10,18 @@ namespace TaskAPI.Repositories
 		private readonly DataContext _context;
 		public UserRepository(DataContext context) { _context = context; }
 		public IEnumerable<User> GetUsers() => _context.Users.ToList();
-        public User CreateUser(User u)
+        public void CreateUser(User u)
         {
-            User user = new() { Id = u.Id, Username = u.Username, Password = u.Password };
+            User foundUser = _context.Users.Where(user => user.Username == u.Username).FirstOrDefault();
+            if (foundUser == null) {
+                User user = new() { Id = u.Id, Username = u.Username, Password = u.Password };
+                _context.Users.Add(user);
+                _context.SaveChanges();
+               
+            }
+         
 
-            _context.Users.Add(user);
-            _context.SaveChanges();
-            return user;
+           
         }
         public User GetUserByNameAndPassword(User user)
         {
@@ -24,6 +29,13 @@ namespace TaskAPI.Repositories
             User foundUser = _context.Users.Where(u => u.Username == user.Username && u.Password == user.Password).FirstOrDefault();
             return foundUser;
         }
+
+        //public User GetUserByUserName(string userName) {
+        //    User foundUser = _context.Users.Where(u => u.Username == userName ).FirstOrDefault();
+        //    return foundUser;
+        //}
+
+
         public User GetUserById(int id)
         {
 

@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using TaskAPI.Entities;
@@ -23,7 +24,7 @@ namespace TaskAPI.Controllers
             _configuration = configuration;
             _userRepository = userRepository;
         }
-
+       
         [HttpPost("register")]
         public ActionResult<User> Register(User user)
         {
@@ -31,7 +32,7 @@ namespace TaskAPI.Controllers
             return Ok(user);
         }
         [HttpPost("login")]
-        public ActionResult<string> Login(User user)
+        public ActionResult Login(User user)
         {
             var u = _userRepository.GetUserByNameAndPassword(user);
             if (u != null)
@@ -45,7 +46,8 @@ namespace TaskAPI.Controllers
                 //    return BadRequest("Password is wrong!");
                 //}
                 string Token = CreateToken(u);
-                return Ok(Token);
+                UserToken userToken = new UserToken() {UserId = u.Id, Token = Token };
+                return Ok(userToken);
             }
             return NotFound("User not found!");
 

@@ -9,6 +9,9 @@ using TaskAPI.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = "server=localhost;user=root;database=TaskDb;password=password;port=3306";
 var serverVersion = new MySqlServerVersion(new Version(8, 0, 27));
+
+var MyAllowSpecificOrigins = "MyPolicy";
+
 builder.Services.AddDbContext<DataContext>(options => options.UseMySql(connectionString, serverVersion));
 // Add services to the container.
 
@@ -31,6 +34,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      builder =>
+                      {
+                          builder.WithOrigins("https://localhost:7162").AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+                      });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -44,6 +56,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthorization();
 
